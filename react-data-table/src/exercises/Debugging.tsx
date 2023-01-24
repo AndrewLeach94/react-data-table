@@ -60,6 +60,7 @@ const App: React.FC<AppProps> = () => {
             backgroundColor: todo.isComplete ? "green" : "initial",
             color: todo.isComplete ? "white" : "initial",
           }}
+          key={todo.id}
         >
           <p style={{ textOverflow: "wrap", maxWidth: "75%" }}>{todo.body}</p>
           <div style={{ display: "flex", flexDirection: "column" }}>
@@ -74,14 +75,15 @@ const App: React.FC<AppProps> = () => {
                 id={`${todo.body}-checkbox`}
                 type="checkbox"
                 checked={todo.isComplete}
-                onClick={() => {
-                  todo.isComplete = true;
+                onChange={() => {
+                  todo.isComplete = !todo.isComplete;
+                  console.log(todo)
                 }}
               />
             </div>
             <button
               onClick={() => {
-                setTodos(todos.filter(({ id }) => id === todo.id));
+                setTodos(todos.filter(({ id }) => id !== todo.id));
               }}
             >
               Delete
