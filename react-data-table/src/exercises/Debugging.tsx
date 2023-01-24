@@ -38,7 +38,7 @@ const App: React.FC<AppProps> = () => {
       <div
         style={{ display: "flex", justifyContent: "center", marginBottom: 50 }}
       >
-        <input type="text" placeholder="Add a todo!" value={input} />
+        <input type="text" placeholder="Add a todo!" value={input} onChange={e => setInput(e.target.value)} />
         <button
           onClick={() => {
             setTodos((prev) => [...prev, { body: input, id: counter.current }]);
