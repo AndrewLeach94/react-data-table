@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Typography, Paper } from "@mui/material";
 import { useState } from "react";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 /// -------------------- Begin Exercise Code -------------------- ///
 /// Code in this block (ended by the similar comment several lines below),
@@ -12,7 +12,7 @@ interface AppProps {}
 interface TodoInterface {
   id: number;
   body: string;
-  isComplete?: boolean;
+  isComplete: boolean;
 }
 
 const App: React.FC<AppProps> = () => {
@@ -20,16 +20,35 @@ const App: React.FC<AppProps> = () => {
     {
       id: 0,
       body: "I am the body of a default todo.",
+      isComplete: false
     },
     {
       id: 1,
       body: "I am the body of a complete todo",
-      isComplete: true,
+      isComplete: true
     },
   ];
   const counter = useRef(defaults.length);
   const [todos, setTodos] = useState<TodoInterface[]>(defaults);
   const [input, setInput] = useState("");
+
+  const handleCheckbox = (arrayPosition: number) => {
+    const updatedTodos = todos.map((element, index) => {
+      if (arrayPosition === index) {
+        element.isComplete = !element.isComplete
+        return element
+      } else {
+        return element;
+      }
+    })
+    console.log(updatedTodos);
+    return setTodos(updatedTodos);
+  }
+
+  useEffect(() => {
+    console.log(todos)
+  })
+  
 
   return (
     <div
@@ -41,14 +60,14 @@ const App: React.FC<AppProps> = () => {
         <input type="text" placeholder="Add a todo!" value={input} onChange={e => setInput(e.target.value)} />
         <button
           onClick={() => {
-            setTodos((prev) => [...prev, { body: input, id: counter.current }]);
+            setTodos((prev) => [...prev, { body: input, id: counter.current, isComplete: false }]);
             setInput("");
           }}
         >
           Submit Todo
         </button>
       </div>
-      {todos.map((todo) => (
+      {todos.map((todo, index) => (
         <div
           style={{
             border: todo.isComplete ? "1px solid darkgreen" : "1px solid grey",
@@ -60,7 +79,7 @@ const App: React.FC<AppProps> = () => {
             backgroundColor: todo.isComplete ? "green" : "initial",
             color: todo.isComplete ? "white" : "initial",
           }}
-          key={todo.id}
+          key={index}
         >
           <p style={{ textOverflow: "wrap", maxWidth: "75%" }}>{todo.body}</p>
           <div style={{ display: "flex", flexDirection: "column" }}>
@@ -74,10 +93,9 @@ const App: React.FC<AppProps> = () => {
               <input
                 id={`${todo.body}-checkbox`}
                 type="checkbox"
-                checked={todo.isComplete}
+                checked={todos[index].isComplete}
                 onChange={() => {
-                  todo.isComplete = !todo.isComplete;
-                  console.log(todo)
+                  handleCheckbox(index)
                 }}
               />
             </div>
@@ -93,7 +111,10 @@ const App: React.FC<AppProps> = () => {
       ))}
     </div>
   );
+  
 };
+
+
 /// -------------------- End Exercise Code -------------------- ///
 
 interface TodoProps {}
