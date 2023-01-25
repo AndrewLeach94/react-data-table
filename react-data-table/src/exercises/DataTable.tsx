@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { ParseResult } from 'papaparse';
 import { usePapaParse } from 'react-papaparse';
 import { Grid, Typography, Paper } from "@mui/material";
-import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 interface DataTableProps {}
 
@@ -26,7 +26,7 @@ const DataTable: React.FC<DataTableProps> = () => {
 
   const columns: GridColDef[] = [
     { field: 'time', headerName: 'Time', width: 200 },
-    { field: 'humidity', headerName: 'Humidity', width: 100 },
+    { field: 'humidity', headerName: 'Humidity (%)', width: 100 },
     { field: 'salinity', headerName: 'Salinity', width: 100 },
     { field: 'airTemperature', headerName: 'Air Temperature (°C)', width: 150 },
     { field: 'waterTemperature', headerName: 'Water Temperature (°C)', width: 200 },
@@ -47,7 +47,7 @@ const DataTable: React.FC<DataTableProps> = () => {
   
   useEffect(() => {
     loadData()
-  }, [])
+  })
   
 
   return (
