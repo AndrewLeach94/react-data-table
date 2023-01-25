@@ -28,7 +28,6 @@ const App: React.FC<AppProps> = () => {
       isComplete: true
     },
   ];
-  const counter = useRef(defaults.length);
   const [todos, setTodos] = useState<TodoInterface[]>(defaults);
   const [input, setInput] = useState("");
 
@@ -41,14 +40,8 @@ const App: React.FC<AppProps> = () => {
         return element;
       }
     })
-    console.log(updatedTodos);
     return setTodos(updatedTodos);
-  }
-
-  useEffect(() => {
-    console.log(todos)
-  })
-  
+  }  
 
   return (
     <div
@@ -60,7 +53,7 @@ const App: React.FC<AppProps> = () => {
         <input type="text" placeholder="Add a todo!" value={input} onChange={e => setInput(e.target.value)} />
         <button
           onClick={() => {
-            setTodos((prev) => [...prev, { body: input, id: counter.current, isComplete: false }]);
+            setTodos((prev) => [...prev, { body: input, id: todos.length, isComplete: false }]);
             setInput("");
           }}
         >
