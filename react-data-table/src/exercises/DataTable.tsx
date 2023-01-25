@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { ParseResult } from 'papaparse';
 import { usePapaParse } from 'react-papaparse';
 import { Grid, Typography, Paper } from "@mui/material";
+import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 
 interface DataTableProps {}
 
@@ -22,6 +23,32 @@ const DataTable: React.FC<DataTableProps> = () => {
       }
     });
   };
+
+  const columns: GridColDef[] = [
+    { field: 'time', headerName: 'Time', width: 200 },
+    { field: 'humidity', headerName: 'Humidity', width: 100 },
+    { field: 'salinity', headerName: 'Salinity', width: 100 },
+    { field: 'airTemperature', headerName: 'Air Temperature (°C)', width: 150 },
+    { field: 'waterTemperature', headerName: 'Water Temperature (°C)', width: 200 },
+    { field: 'windSpeed', headerName: 'Wind Speed (kph)', width: 150 },
+  ];
+
+  const rows = csvData.map((element, index) => {
+    return {
+      id: `row-${index}`,
+      time: element.time,
+      humidity: element.humidity,
+      salinity: element.salinity,
+      airTemperature: element.air_temperature,
+      waterTemperature: element.water_temperature,
+      windSpeed: element.wind_speed,
+    }
+  })
+  
+  useEffect(() => {
+    loadData()
+  }, [])
+  
 
   return (
     <Grid container direction="column">
@@ -62,35 +89,13 @@ const DataTable: React.FC<DataTableProps> = () => {
         </Typography>
 
         <Typography paragraph component="div">
-          <button onClick={() => loadData()}>Load CSV Data</button>
-        </Typography>
-
-        <Typography paragraph component="div">
-          <table className="ArchiveTable">
-            <thead>
-              <tr>
-                <th>time</th>
-                <th>humidity</th>
-                <th>salinity</th>
-                <th>air_temperature</th>
-                <th>water_temperature</th>
-                <th>wind_speed</th>
-              </tr>
-            </thead>
-            <tbody>
-              {csvData &&
-                csvData.map((data, index) => (
-                  <tr key={index}>
-                    <td>{data.time}</td>
-                    <td>{data.humidity}</td>
-                    <td>{data.salinity}</td>
-                    <td>{data.air_temperature}</td>
-                    <td>{data.water_temperature}</td>
-                    <td>{data.wind_speed}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+        <div style={{height: 500, width: "100%"}}>
+          <DataGrid
+            rows={rows} 
+            columns={columns}
+            pageSize={10}
+          />      
+        </div>
         </Typography>
 
       </Paper>
