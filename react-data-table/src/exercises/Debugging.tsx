@@ -1,7 +1,6 @@
 import React from "react";
 import { Grid, Typography, Paper } from "@mui/material";
 import { useState } from "react";
-import { useRef, useEffect } from "react";
 
 /// -------------------- Begin Exercise Code -------------------- ///
 /// Code in this block (ended by the similar comment several lines below),
